@@ -17,7 +17,9 @@ clean:
 	rm -f $(TARGETS)
 
 $(NAME)-firefox.xpi: $(SRC)
+	sed -i 's/\("manifest_version": \).*/\12,/' manifest.json
 	zip -r $@ $^
+	sed -i 's/\("manifest_version": \).*/\13,/' manifest.json
 
 $(NAME)-chrome.zip: $(SRC)
 	zip -r $@ $^

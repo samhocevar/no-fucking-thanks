@@ -50,11 +50,21 @@ function transform(node)
 {
     var v = node.nodeValue;
 
+    // <start of sentence>NFT → Shitty JPEG
     v = v.replace(/([.!?]\s+|^)NFTs?\b/g, function(m, p1) {
         return p1 + plural_and_capital(randget(nft_replaces), 'A' + m);
     });
-    v = v.replace(/((\b[Aa])n(\s+))?NFTs?\b/g, function(m, _, p2, p3) {
-        return (_ ? p2 + p3 : '') + plural_and_capital(randget(nft_replaces), 'a' + m);
+
+    // NFT → shitty JPEG
+    // NFTs → shitty JPEGs
+    // an NFT → a shitty JPEG
+    v = v.replace(/\b(([Aa])n(\s+))?NFTs?\b/g, function(m, p1, p2, p3) {
+        return (p1 ? p2 + p3 : '') + plural_and_capital(randget(nft_replaces), 'a' + m);
+    });
+
+    // SomethingNFT → SomethingShittyJPEG
+    v = v.replace(/([A-Z][a-z]+)NFTs?\b/g, function(m, p1) {
+        return p1 + plural_and_capital(randget(nft_replaces), 'A' + m).replace(/\s+/g, '');
     });
 
     v = v.replace(/[Nn]on[- ][Ff]ungible [Tt]okens?/g, function(m) {
@@ -67,6 +77,10 @@ function transform(node)
 
     v = v.replace(/\b[Cc]rypto[- ]?currenc(y|ies)\b/g, function(m) {
         return capital("pretend money", m);
+    });
+
+    v = v.replace(/\b[Pp]roof[-\s]+of[-\s]+work\b/g, function(m) {
+        return capital("solving sudokus", m);
     });
 
     v = v.replace(/\b([Bb])itcoins?\b/g, function(m) {

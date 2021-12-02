@@ -79,8 +79,8 @@ function transform(node)
         return capital("pretend money", m);
     });
 
-    v = v.replace(/\b[Pp]roof[-\s]+of[-\s]+work\b/g, function(m) {
-        return capital("solving sudokus", m);
+    v = v.replace(/\b[Pp]roof[-\s]+[Oo]f[-\s]+([Ww]ork)\b/g, function(m, p1) {
+        return capital("solving", m) + ' ' + capital("sudokus", p1);
     });
 
     v = v.replace(/\b([Bb])itcoins?\b/g, function(m) {

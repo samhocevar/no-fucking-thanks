@@ -1,24 +1,4 @@
 
-// Some stats to detect whether we’re dealing with French
-var is_french = false;
-
-//var english_words = [ 'of', 'a', 'if', 'the', 'he', 'an', 'is', 'has', 'have', 'are' ];
-
-/*
-var words = [ 'de', 'des', 'du', 'en', 'et', 'le', 'la', 'les', 'un', 'une' ];
-var french_letters = [ 'é', 'è', 'à', 'ù', 'ė' ];
-
-var french_word_count = {};
-var french_letter_count = {};
-
-for (var i in words)
-    french_word_count[words[i]] = 0;
-
-for (var i in french_letters)
-    french_letter_count[french_letters[i]] = 0;
-*/
-
-
 function walk(node, fun)
 {
     switch (node.nodeType)
@@ -36,17 +16,6 @@ function walk(node, fun)
             // Do nothing with unknown nodes
             break;
     }
-}
-
-function stats(node)
-{
-    var v = node.nodeValue.toLowerCase();
-
-    for (var i in words)
-        french_word_count[words[i]] += (v.match(new RegExp('\\b' + words[i] + '\\b', 'g')) || []).length;
-
-    for (var i in french_letters)
-        french_letter_count[french_letters[i]] += (v.match(new RegExp(french_letters[i], 'g')) || []).length;
 }
 
 function randget(array)
@@ -107,21 +76,6 @@ function transform(node)
     if (v != node.nodeValue)
         node.nodeValue = v;
 }
-
-/*
-walk(document.body, stats);
-
-var good_words = 0;
-var good_letters = 0;
-for (var i in Object.keys(french_word_count))
-    if (french_word_count[words[i]] > 5)
-        ++good_words;
-for (var i in Object.keys(french_letter_count))
-    if (french_letter_count[french_letters[i]] > 5)
-        ++good_letters;
-
-if (good_words * 2 > words.length || good_letters * 2 > french_letters.length)
-*/
 
 walk(document.body, transform);
 

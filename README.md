@@ -1,6 +1,6 @@
-Expose N‌FTs for what they really are: shitty JPEGs
+# No Fucking Thanks — n‌ft blocker
 
-# No Fucking Thanks #
+*Expose N‌FTs for what they really are: shitty JPEGs*
 
 This browser extension replaces occurrences of “N‌FT” with “shitty JPEG”, “Bit‌coin”
 with *e.g.* “Buttcoin”, “block‌chain” with “circlejerk”, etc. making the Internet pages
@@ -13,7 +13,7 @@ you browse more honest about what they actually talk about.
 
 Bug reports: use the GitHub issue tracker if possible
 
-Contact: sam@hocevar.net ou https://twitter.com/samhocevar
+Contact: sam@hocevar.net or https://twitter.com/samhocevar
 
 ## Examples
 

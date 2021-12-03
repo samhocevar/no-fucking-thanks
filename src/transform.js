@@ -46,42 +46,68 @@ var nft_replaces = ["shitty JPEG", "crappy JPEG", "stinking JPEG"];
 var non_fungible_token_replaces = ["dreadful amateur drawing", "hideous image"];
 var bitcoin_replaces = ["buttcoin", "shitcoin", "scamcoin"];
 
+var old_text = {};
+
 function transform(node)
 {
-    var v = node.nodeValue;
+    var t = node.nodeValue;
+
+    // #NFT → #ShittyJPEG (useful on Twitter & others)
+    // @NFT → @ShittyJPEG
+    t = t.replace(/([#@])(NFTs?)/g,
+        (m, p1, p2) => p1 + plural_and_capital(randget(nft_replaces), p2).replace(/\s+/g, ''));
 
     // <start of sentence>NFT → Shitty JPEG
-    v = v.replace(/([.!?]\s+|\"|^)NFTs?\b/g,
-        (m, p1) => p1 + plural_and_capital(randget(nft_replaces), 'A' + m));
+    t = t.replace(/([.!?]\s+|\"|^)(NFTs?)\b/g,
+        (m, p1, p2) => p1 + plural_and_capital(randget(nft_replaces), p2));
 
     // NFT → shitty JPEG
     // NFTs → shitty JPEGs
     // an NFT → a shitty JPEG
-    v = v.replace(/\b(([Aa])n(\s+))?NFTs?\b/g,
+    t = t.replace(/\b(([Aa])n(\s+))?NFTs?\b/g,
         (m, p1, p2, p3) => (p1 ? p2 + p3 : '') + plural_and_capital(randget(nft_replaces), 'a' + m));
 
     // SomethingNFT → SomethingShittyJPEG
-    v = v.replace(/([A-Z][a-z]+)NFTs?\b/g,
-        (m, p1) => p1 + plural_and_capital(randget(nft_replaces), 'A' + m).replace(/\s+/g, ''));
+    // NFTSomething → ShittyJPEGSomething
+    t = t.replace(/([a-zA-Z][a-z]+|[@_]|\b)(NFTs?)([a-zA-Z][a-zA-Z]|\b)/g,
+        (m, p1, p2, p3) => p1 + plural_and_capital(randget(nft_replaces), p2).replace(/\s+/g, '') + p3);
 
-    v = v.replace(/[Nn]on[- ][Ff]ungible [Tt]okens?/g,
+    t = t.replace(/[Nn]on[- ][Ff]ungible [Tt]okens?/g,
         (m) => plural_and_capital(randget(non_fungible_token_replaces), m));
 
-    v = v.replace(/\b[Bb]lockchains?\b/g,
+    t = t.replace(/\b[Bb]lockchains?\b/g,
         (m) => plural_and_capital("circlejerk", m));
 
-    v = v.replace(/\b[Cc]rypto[- ]?currenc(y|ies)\b/g,
+    t = t.replace(/\b[Cc]rypto[- ]?currenc(y|ies)\b/g,
         (m) => capital("pretend money", m));
 
-    v = v.replace(/\b[Pp]roof[-\s]+[Oo]f[-\s]+([Ww]ork)\b/g,
+    t = t.replace(/\b[Pp]roof[-\s]+[Oo]f[-\s]+([Ww]ork)\b/g,
         (m, p1) => capital("solving", m) + ' ' + capital("sudokus", p1));
 
-    v = v.replace(/\b([Bb])itcoins?\b/g,
+    t = t.replace(/\b([Bb])itcoins?\b/g,
         (m) => plural_and_capital(randget(bitcoin_replaces), m));
 
-    if (v != node.nodeValue)
-        node.nodeValue = v;
+    if (t != node.nodeValue)
+    {
+        old_text[node] = node.nodeValue;
+        node.nodeValue = t;
+    }
 }
 
+function observe(mutations)
+{
+    for (let m of mutations)
+    {
+        for (let n of m.addedNodes ?? [])
+        {
+            walk(n, transform);
+        }
+    }
+}
+
+// Fix document contents
 walk(document.body, transform);
+
+// Observe future changes
+new MutationObserver(observe).observe(document, { childList: true, subtree: true });
 

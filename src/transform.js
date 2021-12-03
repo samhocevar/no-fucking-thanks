@@ -54,11 +54,11 @@ function transform(node)
 
     // #NFT → #ShittyJPEG (useful on Twitter & others)
     // @NFT → @ShittyJPEG
-    t = t.replace(/([#@])(NFTs?)/g,
+    t = t.replace(/([#@$])(NFTs?)/g,
         (m, p1, p2) => p1 + plural_and_capital(randget(nft_replaces), p2).replace(/\s+/g, ''));
 
     // <start of sentence>NFT → Shitty JPEG
-    t = t.replace(/([.!?]\s+|\"|^)(NFTs?)\b/g,
+    t = t.replace(/([.!?]\s+|[("«“]|^)(NFTs?)\b/g,
         (m, p1, p2) => p1 + plural_and_capital(randget(nft_replaces), p2));
 
     // NFT → shitty JPEG
@@ -75,8 +75,8 @@ function transform(node)
     t = t.replace(/[Nn]on[- ][Ff]ungible [Tt]okens?/g,
         (m) => plural_and_capital(randget(non_fungible_token_replaces), m));
 
-    t = t.replace(/\b[Bb]lockchains?\b/g,
-        (m) => plural_and_capital("circlejerk", m));
+    t = t.replace(/([@#$]|\b)([Bb]lockchains?)/g,
+        (m, p1, p2) => p1 + plural_and_capital("circlejerk", p2));
 
     t = t.replace(/\b[Cc]rypto[- ]?currenc(y|ies)\b/g,
         (m) => capital("pretend money", m));
@@ -84,8 +84,8 @@ function transform(node)
     t = t.replace(/\b[Pp]roof[-\s]+[Oo]f[-\s]+([Ww]ork)\b/g,
         (m, p1) => capital("solving", m) + ' ' + capital("sudokus", p1));
 
-    t = t.replace(/\b([Bb])itcoins?\b/g,
-        (m) => plural_and_capital(randget(bitcoin_replaces), m));
+    t = t.replace(/([@#$]|\b)([Bb]itcoins?)/g,
+        (m, p1, p2) => p1 + plural_and_capital(randget(bitcoin_replaces), p2));
 
     if (t != node.nodeValue)
     {

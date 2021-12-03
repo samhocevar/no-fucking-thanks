@@ -20,7 +20,11 @@ function walk(node, fun)
 
 function randget(array)
 {
-    return array[Math.floor(Math.random() * array.length)];
+    let n = Math.floor(Math.random() * array.length);
+    // Optional re-roll so that early items are picked more often
+    if (Math.random() > 0.5)
+        n = Math.min(n, Math.floor(Math.random() * array.length));
+    return array[n];
 }
 
 function plural_and_capital(word, src)
@@ -38,7 +42,7 @@ function plural(word, src)
     return /s$/.test(src) ? word + 's' : word;
 }
 
-var nft_replaces = ["shitty JPEG", "shoddy JPEG", "stinking JPEG"];
+var nft_replaces = ["shitty JPEG", "crappy JPEG", "stinking JPEG"];
 var non_fungible_token_replaces = ["dreadful amateur drawing", "hideous image"];
 var bitcoin_replaces = ["buttcoin", "shitcoin", "scamcoin"];
 
@@ -47,7 +51,7 @@ function transform(node)
     var v = node.nodeValue;
 
     // <start of sentence>NFT → Shitty JPEG
-    v = v.replace(/([.!?]\s+|^)NFTs?\b/g,
+    v = v.replace(/([.!?]\s+|\"|^)NFTs?\b/g,
         (m, p1) => p1 + plural_and_capital(randget(nft_replaces), 'A' + m));
 
     // NFT → shitty JPEG

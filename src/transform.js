@@ -42,9 +42,9 @@ function plural(word, src)
     return /s$/.test(src) ? word + 's' : word;
 }
 
-var nft_replaces = ["shitty JPEG", "crappy JPEG", "stinking JPEG"];
-var non_fungible_token_replaces = ["dreadful amateur drawing", "hideous image"];
-var bitcoin_replaces = ["buttcoin", "shitcoin", "scamcoin"];
+var nft_replaces = ["shitty JPEG", "crappy JPEG", "stinking JPEG", "Web2 JPEG"];
+var non_fungible_token_replaces = ["dreadful amateur drawing", "hideous image", "stolen art"];
+var bitcoin_replaces = ["buttcoin", "shitcoin", "scamcoin", "mlm scam"];
 
 var old_text = {};
 
